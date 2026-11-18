@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>انسخ الكود | Gibi</title>
+  <meta name="theme-color" content="#E3A23B">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  <!--
+    The "Copy code" link in Gibi's emails opens this page: /copy/?otp=...
+    It copies the code by itself. If the browser blocks that, one tap on the
+    button copies it. The code is only read from the address; never sent anywhere.
+  -->
+  <main>
+    <img class="logo" src="/assets/gibi-logo-vertical.svg" alt="Gibi | جيبي">
+    <div class="card">
+      <h1 id="status">جاري النسخ...</h1>
+      <p class="lead" id="hint">ارجع لجيبي والزق الكود في خانة الكود.</p>
+      <div class="code-box" id="code"></div>
+      <button class="btn btn-primary" id="copy" type="button">انسخ الكود</button>
+      <p class="note" dir="ltr">Go back to Gibi and paste the code.</p>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var otp = (new URLSearchParams(window.location.search).get('otp') || '').replace(/\D/g, '');
+      var status = document.getElementById('status');
+      var button = document.getElementById('copy');
+      document.getElementById('code').textContent = otp || '—';
+
+      if (!otp) {
+        status.textContent = 'الرابط ده ناقص';
+        document.getElementById('hint').textContent = 'افتح الرابط من الإيميل اللي وصلك من جيبي.';
+        button.hidden = true;
+        return;
+      }
+
+      function copied() {
+        status.textContent = 'اتنسخ ✓';
+        button.textContent = 'اتنسخ ✓';
+      }
+
+      function copy() {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(otp).then(copied);
+        }
+        var range = document.createRange();
+        range.selectNodeContents(document.getElementById('code'));
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        if (document.execCommand('copy')) { copied(); return Promise.resolve(); }
+        return Promise.reject();
+      }
+
+      // Try right away; some browsers only allow copying after a tap.
+      copy().catch(function () {
+        status.textContent = 'دوس على الزرار عشان تنسخ';
+      });
+      button.addEventListener('click', function () { copy().catch(function () {}); });
+    })();
+  </script>
+</body>
+</html>
