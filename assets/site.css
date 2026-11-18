@@ -1,0 +1,82 @@
+/* Gibi website styles. Colors and fonts follow the brand kit (docs/brand). */
+:root {
+  --gold: #E3A23B;
+  --dark: #141414;
+  --cream: #F3EFE6;
+  --beige: #E8E1D3;
+  --brown: #8F5410;
+  --muted: #5C564D;
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--dark);
+  font-family: "Readex Pro", Tahoma, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  text-align: center;
+}
+
+.logo { width: 180px; height: auto; margin-bottom: 28px; }
+
+h1 { font-size: 26px; margin: 0 0 8px; font-weight: 700; }
+
+.lead { color: var(--muted); margin: 0 0 28px; max-width: 460px; }
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 28px 24px;
+  box-shadow: 0 1px 2px rgba(20, 20, 20, 0.06);
+}
+
+.code-box {
+  background: var(--beige);
+  border-radius: var(--radius);
+  padding: 18px 12px;
+  font-family: "Readex Pro", "Courier New", monospace;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 8px;
+  direction: ltr;
+  user-select: all;
+  margin: 8px 0 16px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: var(--radius);
+  padding: 16px;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-primary { background: var(--dark); color: var(--cream); }
+.btn-gold { background: var(--gold); color: var(--dark); }
+.btn + .btn { margin-top: 12px; }
+
+.note { color: var(--muted); font-size: 14px; margin-top: 20px; }
+
+.tagline { color: var(--muted); margin-top: 32px; font-size: 15px; }
+.tagline span { display: block; }
+
+[hidden] { display: none !important; }

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Gibi | جيبي</title>
+  <meta name="theme-color" content="#E3A23B">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  <!--
+    The button in Gibi's emails links here:
+      /open/?type=signup|recovery&email=...&otp=...
+    On a phone with Gibi installed, Android opens the app directly (App Link),
+    so this page is only seen on a computer or when the app is not installed.
+    The code is only read from the address; it is never sent anywhere.
+  -->
+  <main>
+    <img class="logo" src="/assets/gibi-logo-vertical.svg" alt="Gibi | جيبي">
+
+    <div class="card" id="with-code" hidden>
+      <h1 id="title">كود جيبي</h1>
+      <p class="lead" id="hint">اكتب الكود ده في التطبيق.</p>
+      <div class="code-box" id="code"></div>
+      <button class="btn btn-primary" id="copy" type="button">انسخ الكود</button>
+      <a class="btn btn-gold" id="open-app" href="#">افتح جيبي</a>
+      <p class="note">الكود صالح لفترة محدودة. ما تبعتهوش لحد.</p>
+      <p class="note" dir="ltr">This code expires soon. Never share it with anyone.</p>
+    </div>
+
+    <div class="card" id="no-code" hidden>
+      <h1>الرابط ده ناقص</h1>
+      <p class="lead">افتح الرابط من الإيميل اللي وصلك من جيبي، أو اكتب الكود في التطبيق بإيدك.</p>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var otp = (params.get('otp') || '').replace(/\D/g, '');
+      var type = params.get('type');
+
+      if (!otp) {
+        document.getElementById('no-code').hidden = false;
+        return;
+      }
+
+      document.getElementById('with-code').hidden = false;
+      document.getElementById('code').textContent = otp;
+      if (type === 'recovery') {
+        document.getElementById('title').textContent = 'كود تغيير كلمة السر';
+        document.getElementById('hint').textContent = 'اكتب الكود ده في جيبي، واختار كلمة سر جديدة.';
+      } else {
+        document.getElementById('title').textContent = 'كود تأكيد حسابك';
+        document.getElementById('hint').textContent = 'اكتب الكود ده في جيبي عشان تأكد حسابك.';
+      }
+
+      // Opens the Gibi app on Android if it is installed (same address, so the
+      // app picks up the code by itself).
+      var openApp = document.getElementById('open-app');
+      var isAndroid = /Android/i.test(navigator.userAgent);
+      if (isAndroid) {
+        openApp.href = 'intent://' + window.location.host + window.location.pathname +
+          window.location.search + '#Intent;scheme=https;package=com.gibi.gibi;end';
+      } else {
+        openApp.hidden = true;
+      }
+
+      var copyButton = document.getElementById('copy');
+      copyButton.addEventListener('click', function () {
+        var done = function () {
+          copyButton.textContent = 'اتنسخ ✓';
+          setTimeout(function () { copyButton.textContent = 'انسخ الكود'; }, 2000);
+        };
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(otp).then(done);
+        } else {
+          var range = document.createRange();
+          range.selectNodeContents(document.getElementById('code'));
+          var selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          document.execCommand('copy');
+          done();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

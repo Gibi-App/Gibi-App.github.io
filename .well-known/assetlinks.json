@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.gibi.gibi",
+      "sha256_cert_fingerprints": [
+        "35:53:D1:94:35:81:52:39:E0:BF:9D:84:2A:2C:90:68:D7:4E:99:6E:9D:17:18:DA:A5:55:8A:1D:5C:7E:72:75"
+      ]
+    }
+  }
+]
